@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start supervisord with the SQL Server process.
-supervisord -c /path/to/supervisord.conf
+supervisord -c /etc/supervisor/conf.d/supervisord.conf
 
 # Wait 60 seconds for SQL Server to start up by ensuring that 
 # calling SQLCMD does not return an error code, which will ensure that sqlcmd is accessible
@@ -26,7 +26,7 @@ if [[ $DBSTATUS -ne 0 ]] || [[ $ERRCODE -ne 0 ]]; then
 fi
 
 # Run the setup script to create the DB and the schema in the DB.
-/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /sql/setup.sql
+/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SA_PASSWORD -d master -i /app/db/setup.sql
 
 # Now run the Python application using supervisord.
 supervisorctl start pythonapp

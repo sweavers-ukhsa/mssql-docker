@@ -14,14 +14,14 @@ RUN apt-get update && \
     apt-get install -y msodbcsql17 mssql-tools unixodbc-dev gcc && \
     echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
 
-# Clone/copy repo into /app folder.
+# Copy repo into /app folder.
 COPY mock-app/ /app/
 
 # Install Python packages and dependencies.
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
 
-# Copy SQL files in preparation for execution. 
-COPY sql/ /sql/
+# Copy supervisord config. 
+COPY supervisord/ /etc/supervisor/conf.d/
 
 # Add start-up script.
 COPY scripts/start.sh /start.sh
